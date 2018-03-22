@@ -4,27 +4,29 @@
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$false,Position=0)]
         [ValidateNotNullOrEmpty()]
-        $LDAPFilter,
+        [string]$LDAPFilter,
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=1)]
-        $Properties = @(
+        [System.DirectoryServices.DirectoryEntry]$SearchRoot=(New-Object System.DirectoryServices.DirectoryEntry),
+        [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=2)]
+        [string[]]$Properties = @(
             "name",
             "sAMAccountName",
             "distinguishedName",
             "userAccountControl"
         ),
-        [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=2)]
-        $Scope='subtree',
-        [Parameter(Mandatory=$false,ValueFromPipeline=$true,Position=3)]
-        [system.directoryservices.directoryentry]$Domain=(Get-ADDomain)
+        [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=3)]
+        [string]$SearchScope='subtree',
+        [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=4)]
+        [int]$PageSize=116        
     )
 
     begin {
     }
     process {
         $search = New-Object System.DirectoryServices.DirectorySearcher
-        $search.SearchRoot = $Domain
-        $search.PageSize = 116
-        $search.SearchScope = $Scope
+        $search.SearchRoot = $SearchRoot
+        $search.PageSize = $PageSize    
+        $search.SearchScope = $SearchScope
         
         $Properties | 
             ForEach-Object {

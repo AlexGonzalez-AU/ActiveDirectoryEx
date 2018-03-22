@@ -4,13 +4,36 @@ function Get-ADObjectOwner {
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true,Position=0)]
         [ValidateNotNullOrEmpty()]
-        $InputObject
+        [System.DirectoryServices.DirectoryEntry[]]
+        $InputObject,
+        [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=1)]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $ForeignDomainFQDN = "",
+        [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=2)]
+        [ValidateNotNullOrEmpty()]
+        [System.Management.Automation.PSCredential]
+        $ForeignDomainCredential
     )
 
     begin {
     }
     process { 
-        [adsi]$obj = "LDAP://{0}" -f [string]$InputObject.distinguishedname
+        if ($ForeignDomainFQDN.Length -gt 0) {
+            $bSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($ForeignDomainCredential.Password)
+            $RemotePassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bSTR)
+            if ($ForeignDomainCredential.UserName.Contains("\")) {
+                $RemoteUsername = "{0}\{1}" -f $ForeignDomainFQDN, $ForeignDomainCredential.UserName.split("\")[1]
+            }
+            else {
+                $RemoteUsername = "{0}\{1}" -f $ForeignDomainFQDN, $ForeignDomainCredential.UserName
+            }
+            $obj = [adsi]::new(("LDAP://{0}/{1}" -f $ForeignDomainFQDN,[string]$InputObject.distinguishedname),$RemoteUsername,$RemotePassword)
+        }
+        else {
+            $obj = $InputObject
+        }
+
         return $obj.ObjectSecurity.Owner
     }
     end {

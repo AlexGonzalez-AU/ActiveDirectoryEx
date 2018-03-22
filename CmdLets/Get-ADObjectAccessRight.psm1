@@ -4,12 +4,13 @@ function Get-ADObjectAccessRight {
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true,Position=0)]
         [ValidateNotNullOrEmpty()]
+        [System.DirectoryServices.DirectoryEntry[]]
         $InputObject,
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=1)]
         [ValidateNotNullOrEmpty()]
         [string]
         $ForeignDomainFQDN = "",
-        [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=1)]
+        [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=2)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
         $ForeignDomainCredential
@@ -18,10 +19,7 @@ function Get-ADObjectAccessRight {
     begin {
     }
     process { 
-        if ($ForeignDomainFQDN.Length -eq 0) {
-            [adsi]$obj = "LDAP://{0}" -f [string]$InputObject.distinguishedname
-        }
-        else {
+        if ($ForeignDomainFQDN.Length -gt 0) {
             $bSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($ForeignDomainCredential.Password)
             $RemotePassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bSTR)
             if ($ForeignDomainCredential.UserName.Contains("\")) {
@@ -32,10 +30,18 @@ function Get-ADObjectAccessRight {
             }
             $obj = [adsi]::new(("LDAP://{0}/{1}" -f $ForeignDomainFQDN,[string]$InputObject.distinguishedname),$RemoteUsername,$RemotePassword)
         }
+        else {
+            $obj = $InputObject
+        }
 
         return $obj.ObjectSecurity.Access |
-            foreach {
-                $_ | Convert-ADAceObjectTypeGuid
+            ForEach-Object {
+                $_ | Add-Member -MemberType NoteProperty -Name __MarkForDeletion -Value $false
+                $_ | Add-Member -MemberType NoteProperty -Name Parent_canonicalName -Value ($obj | Select-Object -ExpandProperty distinguishedName | ConvertFrom-DistinguishedName)
+                $_ | Add-Member -MemberType NoteProperty -Name Parent_distinguishedName -Value ($obj | Select-Object -ExpandProperty distinguishedName)
+                $_ | Add-Member -MemberType NoteProperty -Name Parent_objectClass -Value ($obj | Select-Object -ExpandProperty objectClass | Select-Object -Last 1)
+                $_ | Add-Member -MemberType NoteProperty -Name ObjectTypeName -Value ($_ | ConvertFrom-ObjectTypeGuid)
+                $_ | Add-Member -MemberType NoteProperty -Name InheritedObjectTypeName -Value ($_ | ConvertFrom-InheritedObjectTypeGuid)
                 $_
             }
     }
