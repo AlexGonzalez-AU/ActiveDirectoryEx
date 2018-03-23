@@ -3,16 +3,18 @@ function ConvertFrom-DistinguishedName {
     
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true,Position=0)]
-        [string]$InputObject
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $InputObject
     )
 
     begin {
     }
     process {
-        $path = $InputObject.replace($InputObject.Substring($InputObject.IndexOf('DC=')),'').replace('CN=','').replace('OU=','').trim(',').split(',')
-        $path += $InputObject.Substring($InputObject.IndexOf('DC=')).replace('DC=','').replace(',','.')
-        [array]::Reverse($path)
-        return ($path -join '/').trim('/')
+        $objcetPath = $InputObject.replace($InputObject.Substring($InputObject.IndexOf('DC=')),'').replace('CN=','').replace('OU=','').trim(',').split(',')
+        $objcetPath += $InputObject.Substring($InputObject.IndexOf('DC=')).replace('DC=','').replace(',','.')
+        [array]::Reverse($objcetPath)
+        return ($objcetPath -join '/').trim('/')
     }
     end {
     }

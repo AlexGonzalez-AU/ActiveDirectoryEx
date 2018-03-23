@@ -7,11 +7,9 @@ function Get-ADObjectOwner {
         [System.DirectoryServices.DirectoryEntry[]]
         $InputObject,
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=1)]
-        [ValidateNotNullOrEmpty()]
         [string]
         $ForeignDomainFQDN = "",
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=2)]
-        [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
         $ForeignDomainCredential
     )

@@ -4,7 +4,8 @@
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true,Position=0)]
         [ValidateNotNullOrEmpty()]
-        [string]$DistinguishedName
+        [string]
+        $DistinguishedName
     )
 
     begin {

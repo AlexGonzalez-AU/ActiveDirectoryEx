@@ -4,20 +4,25 @@
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$false,Position=0)]
         [ValidateNotNullOrEmpty()]
-        [string]$LDAPFilter,
+        [string]
+        $LDAPFilter,
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=1)]
-        [System.DirectoryServices.DirectoryEntry]$SearchRoot=(New-Object System.DirectoryServices.DirectoryEntry),
+        [System.DirectoryServices.DirectoryEntry]
+        $SearchRoot=(New-Object System.DirectoryServices.DirectoryEntry),
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=2)]
-        [string[]]$Properties = @(
+        [string[]]
+        $Properties = @(
             "name",
             "sAMAccountName",
             "distinguishedName",
             "userAccountControl"
         ),
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=3)]
-        [string]$SearchScope='subtree',
+        [string]
+        $SearchScope='subtree',
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=4)]
-        [int]$PageSize=116        
+        [int]
+        $PageSize=116        
     )
 
     begin {

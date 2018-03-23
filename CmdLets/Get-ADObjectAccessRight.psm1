@@ -4,14 +4,12 @@ function Get-ADObjectAccessRight {
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true,Position=0)]
         [ValidateNotNullOrEmpty()]
-        [System.DirectoryServices.DirectoryEntry[]]
+        [System.DirectoryServices.DirectoryEntry]
         $InputObject,
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=1)]
-        [ValidateNotNullOrEmpty()]
         [string]
         $ForeignDomainFQDN = "",
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=2)]
-        [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
         $ForeignDomainCredential
     )
@@ -36,7 +34,7 @@ function Get-ADObjectAccessRight {
 
         return $obj.ObjectSecurity.Access |
             ForEach-Object {
-                $_ | Add-Member -MemberType NoteProperty -Name __MarkForDeletion -Value $false
+                $_ | Add-Member -MemberType NoteProperty -Name __AddRemoveIndicator -Value (-1)
                 $_ | Add-Member -MemberType NoteProperty -Name Parent_canonicalName -Value ($obj | Select-Object -ExpandProperty distinguishedName | ConvertFrom-DistinguishedName)
                 $_ | Add-Member -MemberType NoteProperty -Name Parent_distinguishedName -Value ($obj | Select-Object -ExpandProperty distinguishedName)
                 $_ | Add-Member -MemberType NoteProperty -Name Parent_objectClass -Value ($obj | Select-Object -ExpandProperty objectClass | Select-Object -Last 1)

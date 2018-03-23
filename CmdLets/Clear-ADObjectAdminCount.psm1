@@ -3,9 +3,11 @@
 
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true,Position=0)]
-        [System.DirectoryServices.DirectoryEntry]$InputObject,
+        [System.DirectoryServices.DirectoryEntry]
+        $InputObject,
         [Parameter(Mandatory=$false,ValueFromPipeline=$false,Position=1)]
-        [switch]$Force
+        [switch]
+        $Force
     )    
 
     begin {

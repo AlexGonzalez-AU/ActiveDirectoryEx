@@ -3,6 +3,8 @@ function ConvertFrom-ObjectTypeGuid {
     
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true,Position=0)]
+        [ValidateNotNullOrEmpty()]
+        [System.DirectoryServices.ActiveDirectoryAccessRule]
         $InputObject
     )
 
