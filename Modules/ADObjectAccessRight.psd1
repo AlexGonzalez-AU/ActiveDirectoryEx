@@ -67,18 +67,18 @@
     
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     NestedModules = @(
-        '.\CmdLets\ConvertFrom-DistinguishedName.psm1',
-        '.\CmdLets\ConvertFrom-ObjectTypeGuid.psm1',
-        '.\CmdLets\ConvertFrom-InheritedObjectTypeGuid.psm1',
-        '.\CmdLets\Get-ADDirectoryEntry',
-        '.\CmdLets\Get-ADObject',        
-        '.\CmdLets\Get-ADRightsObjectGuids.psm1',
-        '.\CmdLets\Get-ADSchemaObjectGuids.psm1',
-        '.\CmdLets\Add-ADObjectAccessRight.psm1',
-        '.\CmdLets\Remove-ADObjectAccessRight.psm1',
-        '.\CmdLets\Remove-ADObjectAccessRightHelper.psm1',
-        '.\CmdLets\Get-ADObjectAccessRight.psm1',
-        '.\CmdLets\Set-ADObjectAccessRight.psm1'
+        '..\CmdLets\ConvertFrom-DistinguishedName.psm1',
+        '..\CmdLets\ConvertFrom-ObjectTypeGuid.psm1',
+        '..\CmdLets\ConvertFrom-InheritedObjectTypeGuid.psm1',
+        '..\CmdLets\Get-ADDirectoryEntry',
+        '..\CmdLets\Get-ADObject',        
+        '..\CmdLets\Get-ADRightsObjectGuids.psm1',
+        '..\CmdLets\Get-ADSchemaObjectGuids.psm1',
+        '..\CmdLets\Add-ADObjectAccessRight.psm1',
+        '..\CmdLets\Remove-ADObjectAccessRight.psm1',
+        '..\CmdLets\Remove-ADObjectAccessRightHelper.psm1',
+        '..\CmdLets\Get-ADObjectAccessRight.psm1',
+        '..\CmdLets\Set-ADObjectAccessRight.psm1'
     )
     
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.

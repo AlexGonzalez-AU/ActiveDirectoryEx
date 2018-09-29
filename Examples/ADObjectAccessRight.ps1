@@ -1,4 +1,4 @@
-Import-Module C:\Users\Administrator\Desktop\ADObjectAccessRight.psm1 -Force
+Import-Module ..\Modules\ADObjectAccessRight.psd1 -Force
 
 # Get a list of distinguishedNames
 $distinguishedNames = Get-ADGroup -Filter * | 
