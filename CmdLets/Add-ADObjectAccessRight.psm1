@@ -63,14 +63,16 @@ function Add-ADObjectAccessRight {
         $eap = $ErrorActionPreference 
         $ErrorActionPreference = "Stop"
         try {
+            $IdentityReference
             $IdentityReference = $accountName.Translate([System.Security.Principal.SecurityIdentifier])
+            $IdentityReference
+            $IdentityReference.Translate([System.Security.Principal.SecurityIdentifier])
         }
         catch {
-            $IdentityReference
+            Write-Error -Message "Unable to resolve IdentityReference."
+            continue
         }
-        $ErrorActionPreference = $eap 
-
-        $IdentityReference.Translate([System.Security.Principal.SecurityIdentifier])
+        $ErrorActionPreference = $eap
 
         $ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule(
                 $IdentityReference, 

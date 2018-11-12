@@ -91,6 +91,20 @@ function Remove-ADObjectAccessRight {
             $obj = $InputObject
         }        
 
+        $eap = $ErrorActionPreference 
+        $ErrorActionPreference = "Stop"
+        try {
+            $IdentityReference
+            $IdentityReference = $accountName.Translate([System.Security.Principal.SecurityIdentifier])
+            $IdentityReference
+            $IdentityReference.Translate([System.Security.Principal.SecurityIdentifier])
+        }
+        catch {
+            Write-Error -Message "Unable to resolve IdentityReference."
+            continue
+        }
+        $ErrorActionPreference = $eap        
+
         $ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule(
                 $IdentityReference, 
                 $ActiveDirectoryRights, 
