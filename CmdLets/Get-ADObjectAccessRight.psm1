@@ -40,7 +40,23 @@ function Get-ADObjectAccessRight {
                 $_ | Add-Member -MemberType NoteProperty -Name Parent_objectClass -Value ($obj | Select-Object -ExpandProperty objectClass | Select-Object -Last 1)
                 $_ | Add-Member -MemberType NoteProperty -Name ObjectTypeName -Value ($_ | ConvertFrom-ObjectTypeGuid)
                 $_ | Add-Member -MemberType NoteProperty -Name InheritedObjectTypeName -Value ($_ | ConvertFrom-InheritedObjectTypeGuid)
-                $_
+                $_ | Select-Object `
+                    __AddRemoveIndicator, 
+                    Parent_distinguishedName,
+                    AccessControlType,
+                    IdentityReference,
+                    ActiveDirectoryRights,
+                    ObjectTypeName,
+                    InheritanceType,
+                    InheritedObjectTypeName,
+                    Parent_canonicalName,
+                    Parent_objectClass,
+                    ObjectType,
+                    InheritedObjectType,
+                    ObjectFlags,
+                    IsInherited,
+                    InheritanceFlags,
+                    PropagationFlags
             }
     }
     end {

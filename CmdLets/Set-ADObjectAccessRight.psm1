@@ -26,8 +26,8 @@ function Set-ADObjectAccessRight {
                 -IdentityReference $InputObject.IdentityReference `
                 -ActiveDirectoryRights $InputObject.ActiveDirectoryRights `
                 -AccessControlType $InputObject.AccessControlType `
-                -ObjectType $InputObject.ObjectType `
-                -InheritanceType $InputObject.InheritanceType `
+                -ObjectType ($InputObject.ObjectTypeName | ConvertTo-ObjectTypeGuid) `
+                -InheritanceType ($InputObject.InheritanceTypeName | ConvertTo-InheritedObjectTypeGuid) `
                 -InheritedObjectType $InputObject.InheritedObjectType `
                 -ForeignDomainFQDN $ForeignDomainFQDN `
                 -ForeignDomainCredential $ForeignDomainCredential `
@@ -40,8 +40,8 @@ function Set-ADObjectAccessRight {
                 -IdentityReference $InputObject.IdentityReference `
                 -ActiveDirectoryRights $InputObject.ActiveDirectoryRights `
                 -AccessControlType $InputObject.AccessControlType `
-                -ObjectType $InputObject.ObjectType `
-                -InheritanceType $InputObject.InheritanceType `
+                -ObjectType ($InputObject | ConvertTo-ObjectTypeGuid) `
+                -InheritanceType ($InputObject | ConvertTo-InheritedObjectTypeGuid) `
                 -InheritedObjectType $InputObject.InheritedObjectType `
                 -ForeignDomainFQDN $ForeignDomainFQDN `
                 -ForeignDomainCredential $ForeignDomainCredential `

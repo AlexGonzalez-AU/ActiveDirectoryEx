@@ -70,6 +70,8 @@
         '..\CmdLets\ConvertFrom-DistinguishedName.psm1',
         '..\CmdLets\ConvertFrom-ObjectTypeGuid.psm1',
         '..\CmdLets\ConvertFrom-InheritedObjectTypeGuid.psm1',
+        '..\CmdLets\ConvertTo-ObjectTypeGuid.psm1',
+        '..\CmdLets\ConvertTo-InheritedObjectTypeGuid.psm1',
         '..\CmdLets\Get-ADDirectoryEntry.psm1',
         '..\CmdLets\Get-ADObject.psm1',        
         '..\CmdLets\Get-ADRightsObjectGuids.psm1',
