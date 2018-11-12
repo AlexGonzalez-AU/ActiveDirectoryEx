@@ -27,8 +27,8 @@ function Set-ADObjectAccessRight {
                 -ActiveDirectoryRights $InputObject.ActiveDirectoryRights `
                 -AccessControlType $InputObject.AccessControlType `
                 -ObjectType ($InputObject.ObjectTypeName | ConvertTo-ObjectTypeGuid) `
-                -InheritanceType ($InputObject.InheritanceTypeName | ConvertTo-InheritedObjectTypeGuid) `
-                -InheritedObjectType $InputObject.InheritedObjectType `
+                -InheritanceType $InputObject.InheritanceType `
+                -InheritedObjectType ($InputObject.InheritedObjectTypeName | ConvertTo-InheritedObjectTypeGuid) `
                 -ForeignDomainFQDN $ForeignDomainFQDN `
                 -ForeignDomainCredential $ForeignDomainCredential `
                 -Confirm:(-not $Force)
@@ -40,9 +40,9 @@ function Set-ADObjectAccessRight {
                 -IdentityReference $InputObject.IdentityReference `
                 -ActiveDirectoryRights $InputObject.ActiveDirectoryRights `
                 -AccessControlType $InputObject.AccessControlType `
-                -ObjectType ($InputObject | ConvertTo-ObjectTypeGuid) `
-                -InheritanceType ($InputObject | ConvertTo-InheritedObjectTypeGuid) `
-                -InheritedObjectType $InputObject.InheritedObjectType `
+                -ObjectType ($InputObject.ObjectTypeName | ConvertTo-ObjectTypeGuid) `
+                -InheritanceType $InputObject.InheritanceType `
+                -InheritedObjectType ($InputObject.InheritedObjectTypeName | ConvertTo-InheritedObjectTypeGuid) `
                 -ForeignDomainFQDN $ForeignDomainFQDN `
                 -ForeignDomainCredential $ForeignDomainCredential `
                 -Confirm:(-not $Force)
