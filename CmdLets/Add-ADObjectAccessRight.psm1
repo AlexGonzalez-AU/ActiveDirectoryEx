@@ -39,6 +39,10 @@ function Add-ADObjectAccessRight {
     )
 
     begin {
+        if (Get-WmiObject -Query "select * from Win32_ComputerSystem where DomainRole < 4") {
+            Write-Error -Message "The running system is not a Domain Controller and 'Add-ADObjectAccessRight' must execute from a Domain Controller."
+            break
+        }
     }
     process {
         if ($ForeignDomainFQDN.Length -gt 0) {
@@ -55,6 +59,18 @@ function Add-ADObjectAccessRight {
         else {
             $obj = $InputObject
         }        
+
+        $eap = $ErrorActionPreference 
+        $ErrorActionPreference = "Stop"
+        try {
+            $IdentityReference = $accountName.Translate([System.Security.Principal.SecurityIdentifier])
+        }
+        catch {
+            $IdentityReference
+        }
+        $ErrorActionPreference = $eap 
+
+        $IdentityReference.Translate([System.Security.Principal.SecurityIdentifier])
 
         $ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule(
                 $IdentityReference, 

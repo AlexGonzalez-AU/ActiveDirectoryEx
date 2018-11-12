@@ -70,6 +70,10 @@ function Remove-ADObjectAccessRight {
     )
 
     begin {
+        if (Get-WmiObject -Query "select * from Win32_ComputerSystem where DomainRole < 4") {
+            Write-Error -Message "The running system is not a Domain Controller and 'Remove-ADObjectAccessRight' must execute from a Domain Controller."
+            break
+        }
     }
     process {
         if ($ForeignDomainFQDN.Length -gt 0) {
