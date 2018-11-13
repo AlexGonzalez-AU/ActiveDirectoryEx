@@ -60,20 +60,6 @@ function Add-ADObjectAccessRight {
             $obj = $InputObject
         }        
 
-        $eap = $ErrorActionPreference 
-        $ErrorActionPreference = "Stop"
-        try {
-            $IdentityReference
-            $IdentityReference = $accountName.Translate([System.Security.Principal.SecurityIdentifier])
-            $IdentityReference
-            $IdentityReference.Translate([System.Security.Principal.SecurityIdentifier])
-        }
-        catch {
-            Write-Error -Message "Unable to resolve IdentityReference."
-            continue
-        }
-        $ErrorActionPreference = $eap
-
         $ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule(
                 $IdentityReference, 
                 $ActiveDirectoryRights, 
@@ -82,6 +68,16 @@ function Add-ADObjectAccessRight {
                 $InheritanceType,
                 $InheritedObjectType
             )
+
+        # Attempt to translate the account (if the account does not exist this will produce an error)
+        $IdentityReferenceSid = $null
+        $IdentityReferenceSid = $IdentityReference.Translate([System.Security.Principal.SecurityIdentifier])
+        if ($IdentityReferenceSid -eq $null) {
+            $ace = $null
+        }
+        else {
+            Write-Output ("{0}`t{1}" -f $IdentityReference.Value, $IdentityReferenceSid.Value)
+        }            
 
 $shouldProcessTarget = $obj.distinguishedname
 $shouldProcessOperation = @"
